@@ -218,10 +218,10 @@ def imprimir(tabla):
 
 def Stock_Total(tabla):
         conexion,cursor = Conex()
-        cursor.execute(f"SELECT SUM(Stock) FROM  {tabla} as Stock_Total")
+        cursor.execute(f"SELECT SUM(Stock) FROM  {tabla} AS Stock_Total")
         resultado = cursor.fetchone()[0]
         columna = [descripcion[0] for descripcion in cursor.description]
-        print(columna)
+        print("Stock Total")
         print(resultado)
 
 def Sin_Stock():
@@ -279,32 +279,21 @@ def Precio_Medio():
         cursor.execute("""
         SELECT 'Adidas' AS Marca, AVG(Precio) AS Precio_Medio
         FROM Adidas
-
         UNION ALL
-
-        SELECT 'Converse', AVG(Precio) AS Precio_Medio
+        SELECT 'Converse', AVG(Precio) 
         FROM Converse
-
         UNION ALL
-
-        SELECT 'Nike', AVG(Precio) AS Precio_Medio
+        SELECT 'Nike', AVG(Precio) 
         FROM Nike
-
         UNION ALL
-
-        SELECT 'Puma', AVG(Precio) AS Precio_Medio
+        SELECT 'Puma', AVG(Precio) 
         FROM Puma
-
         UNION ALL
-
-        SELECT 'Skechers', AVG(Precio) AS Precio_Medio
+        SELECT 'Skechers', AVG(Precio)
         FROM Skechers
-
         UNION ALL
-
-        SELECT 'VANS', AVG(Precio) AS Precio_Medio
+        SELECT 'VANS', AVG(Precio) 
         FROM VANS
-
         """)
         filas = cursor.fetchall()
         columnas = [descripcion[0] for descripcion in cursor.description]
@@ -319,32 +308,21 @@ def Ganancias_Esperadas():
         cursor.execute("""
         SELECT 'Adidas' AS Marca, SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
         FROM Adidas
-
         UNION ALL
-
         SELECT 'Converse', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
         FROM Converse
-
         UNION ALL
-
         SELECT 'Nike', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
         FROM Nike
-
         UNION ALL
-
         SELECT 'Puma', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
         FROM Puma
-
         UNION ALL
-
         SELECT 'Skechers', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
         FROM Skechers
-
         UNION ALL
-
         SELECT 'VANS', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
         FROM VANS
-
         """)
         filas = cursor.fetchall()
         columnas = [descripcion[0] for descripcion in cursor.description]
@@ -354,25 +332,48 @@ def Ganancias_Esperadas():
                  print(" | ".join(str(campo) for campo in fila))
         conexion.close()
 
-
+print("Datos Tabla Adidas:")
 imprimir("Adidas")
+print("Datos Tabla Nike:")
 imprimir("Nike")
+print()
+print("Datos Tabla Converse:")
 imprimir("Converse")
+print()
+print("Datos Tabla Nike:")
 imprimir("Nike")
+print()
+print("Datos Tabla Puma:")
 imprimir("Puma")
+print()
+print("Datos Tabla Skechers:")
+print()
 imprimir("Skechers")
+print()
+print("Datos Tabla VANS:")
 imprimir("VANS")
 
+
+print("Adidas")
 Stock_Total("Adidas")
+print("Nike")
 Stock_Total("Nike")
+print("Converse")
 Stock_Total("Converse")
-Stock_Total("Nike")
+print("Puma")
 Stock_Total("Puma")
+print("Skechers")
 Stock_Total("Skechers")
+print("VANS")
 Stock_Total("VANS")
 
+print("")
+print("Productos sin stock:")
 Sin_Stock()
 
+print("")
+print("Precio medio de producto por tabla:")
 Precio_Medio()
-
+print("")
+print("Ganancias esperadas por tabla:")
 Ganancias_Esperadas()

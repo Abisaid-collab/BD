@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 from tkinter import ttk as kt
-from BD.BD import *
+from BD import *
 import os
 import sys
 

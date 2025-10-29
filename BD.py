@@ -273,7 +273,6 @@ def Sin_Stock():
     for fila in datos:
         print(f"{fila[0]} | {fila[1]} | {fila[2]} | {fila[3]}")
 
-
 def Precio_Medio():
         conexion,cursor = Conex()
         cursor.execute("""
@@ -334,22 +333,23 @@ def Ganancias_Esperadas():
 
 print("Datos Tabla Adidas:")
 imprimir("Adidas")
+print(" ")
 print("Datos Tabla Nike:")
 imprimir("Nike")
-print()
+print(" ")
 print("Datos Tabla Converse:")
 imprimir("Converse")
-print()
+print(" ")
 print("Datos Tabla Nike:")
 imprimir("Nike")
-print()
+print(" ")
 print("Datos Tabla Puma:")
 imprimir("Puma")
-print()
+print(" ")
 print("Datos Tabla Skechers:")
-print()
+print(" ")
 imprimir("Skechers")
-print()
+print(" ")
 print("Datos Tabla VANS:")
 imprimir("VANS")
 
@@ -367,13 +367,13 @@ Stock_Total("Skechers")
 print("VANS")
 Stock_Total("VANS")
 
-print("")
+print(" ")
 print("Productos sin stock:")
 Sin_Stock()
 
-print("")
+print(" ")
 print("Precio medio de producto por tabla:")
 Precio_Medio()
-print("")
+print(" ")
 print("Ganancias esperadas por tabla:")
 Ganancias_Esperadas()

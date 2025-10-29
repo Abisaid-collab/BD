@@ -209,8 +209,170 @@ def imprimir(tabla):
         conexion,cursor = Conex()
         cursor.execute(f"SELECT * FROM {tabla}")
         filas = cursor.fetchall()
-        print("-" * 40)
+        columnas = [descripcion[0] for descripcion in cursor.description]
+        print(" | ".join(columnas))
+        print("-" * (len(" | ".join(columnas)) + 5))
         for fila in filas:
                  print(" | ".join(str(campo) for campo in fila))
+        conexion.close()
+
+def Stock_Total(tabla):
+        conexion,cursor = Conex()
+        cursor.execute(f"SELECT SUM(Stock) FROM  {tabla} as Stock_Total")
+        resultado = cursor.fetchone()[0]
+        columna = [descripcion[0] for descripcion in cursor.description]
+        print(columna)
+        print(resultado)
+
+def Sin_Stock():
+    conexion, cursor = Conex()
+    cursor.execute("""
+        SELECT 'Adidas' AS Marca, Id_Producto, Precio, Stock
+        FROM Adidas
+        WHERE Stock = 0 OR Stock IS NULL
+
+        UNION ALL
+
+        SELECT 'Converse', Id_Producto, Precio, Stock
+        FROM Converse
+        WHERE Stock = 0 OR Stock IS NULL
+
+        UNION ALL
+
+        SELECT 'Nike', Id_Producto, Precio, Stock
+        FROM Nike
+        WHERE Stock = 0 OR Stock IS NULL
+
+        UNION ALL
+
+        SELECT 'Puma', Id_Producto, Precio, Stock
+        FROM Puma
+        WHERE Stock = 0 OR Stock IS NULL
+
+        UNION ALL
+
+        SELECT 'Skechers', Id_Producto, Precio, Stock
+        FROM Skechers
+        WHERE Stock = 0 OR Stock IS NULL
+
+        UNION ALL
+
+        SELECT 'VANS', Id_Producto, Precio, Stock
+        FROM VANS
+        WHERE Stock = 0 OR Stock IS NULL
+    """)
+    datos = cursor.fetchall()
+    if not datos:
+        print("No hay productos sin stock.")
+        return
+
+    conexion.close()
+
+    print("Marca | ID | Precio | Stock")
+    print("---------------------------------")
+    for fila in datos:
+        print(f"{fila[0]} | {fila[1]} | {fila[2]} | {fila[3]}")
 
 
+def Precio_Medio():
+        conexion,cursor = Conex()
+        cursor.execute("""
+        SELECT 'Adidas' AS Marca, AVG(Precio) AS Precio_Medio
+        FROM Adidas
+
+        UNION ALL
+
+        SELECT 'Converse', AVG(Precio) AS Precio_Medio
+        FROM Converse
+
+        UNION ALL
+
+        SELECT 'Nike', AVG(Precio) AS Precio_Medio
+        FROM Nike
+
+        UNION ALL
+
+        SELECT 'Puma', AVG(Precio) AS Precio_Medio
+        FROM Puma
+
+        UNION ALL
+
+        SELECT 'Skechers', AVG(Precio) AS Precio_Medio
+        FROM Skechers
+
+        UNION ALL
+
+        SELECT 'VANS', AVG(Precio) AS Precio_Medio
+        FROM VANS
+
+        """)
+        filas = cursor.fetchall()
+        columnas = [descripcion[0] for descripcion in cursor.description]
+        print(" | ".join(columnas))
+        print("-" * (len(" | ".join(columnas)) + 5))
+        for fila in filas:
+                 print(" | ".join(str(campo) for campo in fila))
+        conexion.close()
+
+def Ganancias_Esperadas():
+        conexion,cursor = Conex()
+        cursor.execute("""
+        SELECT 'Adidas' AS Marca, SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
+        FROM Adidas
+
+        UNION ALL
+
+        SELECT 'Converse', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
+        FROM Converse
+
+        UNION ALL
+
+        SELECT 'Nike', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
+        FROM Nike
+
+        UNION ALL
+
+        SELECT 'Puma', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
+        FROM Puma
+
+        UNION ALL
+
+        SELECT 'Skechers', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
+        FROM Skechers
+
+        UNION ALL
+
+        SELECT 'VANS', SUM(Precio) AS Total_Invertido, SUM(Precio) + (SUM(Precio)*.20) AS Ganancia_Esperada
+        FROM VANS
+
+        """)
+        filas = cursor.fetchall()
+        columnas = [descripcion[0] for descripcion in cursor.description]
+        print(" | ".join(columnas))
+        print("-" * (len(" | ".join(columnas)) + 5))
+        for fila in filas:
+                 print(" | ".join(str(campo) for campo in fila))
+        conexion.close()
+
+
+imprimir("Adidas")
+imprimir("Nike")
+imprimir("Converse")
+imprimir("Nike")
+imprimir("Puma")
+imprimir("Skechers")
+imprimir("VANS")
+
+Stock_Total("Adidas")
+Stock_Total("Nike")
+Stock_Total("Converse")
+Stock_Total("Nike")
+Stock_Total("Puma")
+Stock_Total("Skechers")
+Stock_Total("VANS")
+
+Sin_Stock()
+
+Precio_Medio()
+
+Ganancias_Esperadas()

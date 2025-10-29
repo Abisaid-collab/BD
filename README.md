@@ -1,2 +1,2 @@
 # BD
-BAse
+Base de datos

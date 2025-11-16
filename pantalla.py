@@ -1,8 +1,7 @@
 from tkinter import *
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk
-from tkinter import ttk as kt
 from BD import *
 import os
 import sys
@@ -144,7 +143,35 @@ class Registro:
             emergente.destroy()  # Cierra la ventana emergente
 
         Button(emergente, text="Actualizar", command=modificar).pack(pady=10)
-      
-Registro()
+
+def seleccionar_y_guardar(id_producto, tabla):
+    ruta = filedialog.askopenfilename(
+        title="Seleccionar imagen",
+        filetypes=[("Imágenes", "*.jpg *.png *.jpeg *.gif *.bmp")]
+    )
+
+    if ruta:
+        mensaje = guardar_imagen_blob(tabla, id_producto, ruta)
+        print(mensaje)
+
+class Imagen:
+      def __init__(self):
+            self.ventana = Tk()
+            self.ventana.geometry("400x200")
+            self.ListaMarca = ["Nike", "Adidas", "Converse", "Puma", "Skechers","VANS"]
+            self.MarcaV = StringVar()
+            self.Label_Marca = Label( text = "Marca: ")
+            self.Entrada_Marca = OptionMenu(self.ventana, self.MarcaV, *self.ListaMarca)
+            self.Label_Marca.place(x = 200, y = 10)
+            self.Entrada_Marca.place(x = 250, y = 10)
+            self.ventana.title("Guardar Imagen") 
+            self.Label = Label(text = "Id:")
+            self.Label.place(x = 10, y = 10 )
+            self.Entrada = Entry()
+            self.Entrada.place(x = 30, y = 10)
+            self.BotonImagen = Button( text = "Insertar imagen", command=lambda: seleccionar_y_guardar(self.MarcaV.get(),self.Entrada.get()))
+            self.BotonImagen.place(x = 10 ,y = 40)
+#Registro()
+Imagen()
 
 mainloop()

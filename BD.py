@@ -331,6 +331,34 @@ def Ganancias_Esperadas():
                  print(" | ".join(str(campo) for campo in fila))
         conexion.close()
 
+
+def guardar_imagen_blob(id_producto, tabla, ruta_imagen):
+    conexion, cursor = Conex()
+
+    try:
+        with open(ruta_imagen, "rb") as f:
+            datos = f.read()
+
+        cursor.execute(
+            f"UPDATE {tabla} SET Imagen = ? WHERE Id_Producto = ?",
+            (datos, id_producto)
+        )
+
+        conexion.commit()
+
+        if cursor.rowcount == 0:
+            return "No se encontró el producto para asignar imagen."
+        return "Imagen guardada correctamente."
+
+    except Exception as e:
+        return f"Ocurrió un error: {e}"
+
+    finally:
+        conexion.close()
+
+
+
+
 print("Datos Tabla Adidas:")
 imprimir("Adidas")
 print(" ")

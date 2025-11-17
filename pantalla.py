@@ -5,13 +5,13 @@ from PIL import Image, ImageTk
 from BD import *
 import os
 import sys
+import io
 
 def ruta_recurso(relative_path):
     """Devuelve la ruta correcta para archivos dentro o fuera del exe."""
     base_path = getattr(sys, "_MEIPASS", os.path.abspath("."))
     return os.path.join(base_path, relative_path)
-
-
+Imagenes_cache = []
 color = "#EB6C10"
 fondo = "#292929"
 
@@ -144,7 +144,7 @@ class Registro:
 
         Button(emergente, text="Actualizar", command=modificar).pack(pady=10)
 
-def seleccionar_y_guardar(id_producto, tabla):
+def seleccionar_y_guardar(tabla,id_producto):
     ruta = filedialog.askopenfilename(
         title="Seleccionar imagen",
         filetypes=[("Imágenes", "*.jpg *.png *.jpeg *.gif *.bmp")]
@@ -165,13 +165,87 @@ class Imagen:
             self.Label_Marca.place(x = 200, y = 10)
             self.Entrada_Marca.place(x = 250, y = 10)
             self.ventana.title("Guardar Imagen") 
-            self.Label = Label(text = "Id:")
+            self.Label = Label(self.ventana, text = "Id:")
             self.Label.place(x = 10, y = 10 )
-            self.Entrada = Entry()
+            self.Entrada = Entry(self.ventana)
             self.Entrada.place(x = 30, y = 10)
-            self.BotonImagen = Button( text = "Insertar imagen", command=lambda: seleccionar_y_guardar(self.MarcaV.get(),self.Entrada.get()))
+            self.BotonImagen = Button(self.ventana, text = "Insertar imagen", command=lambda: seleccionar_y_guardar(self.MarcaV.get(),self.Entrada.get()))
             self.BotonImagen.place(x = 10 ,y = 40)
-#Registro()
-Imagen()
+
+class Principal:
+     def __init__(self):
+      self.ventana = Tk()
+      self.ventana.geometry("400x200")
+      self.botonRegistro = Button(text = "Ventana Registro", command = lambda: Registro())
+      self.botonConsulta = Button(text = "Ventana Consulta", command = lambda: Ventana_consulta())
+      self.botonImagen = Button(text = "Agregar imagen", command = lambda: Imagen())
+
+      self.botonConsulta.place(x = 10, y = 30)
+      self.botonImagen.place(x = 150, y = 30)
+      self.botonRegistro.place(x = 300, y = 30)
+
+def Ventana_consulta():
+    root = tk.Toplevel()  # ← IMPORTANTE: antes era Tk()
+    root.title("Lista de Productos")
+    root.geometry("600x500")
+
+
+    # ----- Contenedor principal -----
+    contenedor = tk.Frame(root)
+    contenedor.pack(fill="both", expand=True)
+
+    # Canvas donde va el contenido scrolleable
+    canvas = tk.Canvas(contenedor)
+    canvas.pack(side="left", fill="both", expand=True)
+
+    # Barra lateral
+    scrollbar = tk.Scrollbar(contenedor, orient="vertical", command=canvas.yview)
+    scrollbar.pack(side="right", fill="y")
+
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    # Ajustar la región scrolleable cuando cambie el tamaño
+    canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    # ----- Frame interno -----
+    marco = tk.Frame(canvas)
+    canvas.create_window((0, 0), window=marco, anchor="nw")
+
+    # --------------------------
+    # Conectar scroll del mouse
+    # --------------------------
+    # Windows y Linux
+    canvas.bind_all("<MouseWheel>", lambda e: hacer_scroll_con_rueda(canvas, e))
+    # Linux (algunas distros)
+    canvas.bind_all("<Button-4>", lambda e: hacer_scroll_con_rueda(canvas, e))
+    canvas.bind_all("<Button-5>", lambda e: hacer_scroll_con_rueda(canvas, e))
+
+    # -------------------------------------
+    # Mostrar productos desde la base de datos
+    # -------------------------------------
+    productos = obtener_productos()
+    imagenes_cache = []  # Previene GC
+
+    for id, sexo, talla, material, precio, stock, imagen in productos:
+        frame_producto = tk.Frame(marco, pady=10, padx=10, borderwidth=2, relief="ridge")
+        frame_producto.pack(fill="x", padx=5, pady=5)
+
+        # Imagen
+        if imagen:
+            img = Image.open(io.BytesIO(imagen))
+            img = img.resize((120, 120))
+            img_tk = ImageTk.PhotoImage(img)
+            imagenes_cache.append(img_tk)
+
+            tk.Label(frame_producto, image=img_tk).pack(side="left", padx=10)
+        else:
+            tk.Label(frame_producto, text="(Sin imagen)").pack(side="left", padx=10)
+
+        # Texto
+        info = f"Id_Producto: {id}\n Sexo: {sexo}\nTalla: {talla}\n Material:{material}\n Precio: {precio}\n Stock: {stock}"
+        tk.Label(frame_producto, text=info, justify="left").pack(side="left")
+
+
+Principal()
 
 mainloop()

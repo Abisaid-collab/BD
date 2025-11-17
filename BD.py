@@ -332,7 +332,7 @@ def Ganancias_Esperadas():
         conexion.close()
 
 
-def guardar_imagen_blob(id_producto, tabla, ruta_imagen):
+def guardar_imagen_blob(tabla, id_producto, ruta_imagen):
     conexion, cursor = Conex()
 
     try:
@@ -356,9 +356,20 @@ def guardar_imagen_blob(id_producto, tabla, ruta_imagen):
     finally:
         conexion.close()
 
+def obtener_productos():
+    conn,cursor = Conex()
+    cursor.execute("SELECT Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen FROM Adidas")
+    datos = cursor.fetchall()
+    conn.close()
+    return datos
 
 
-
+def hacer_scroll_con_rueda(canvas, evento):
+    if evento.num == 5 or evento.delta < 0:    
+        canvas.yview_scroll(1, "units")
+    elif evento.num == 4 or evento.delta > 0:   
+        canvas.yview_scroll(-1, "units")
+'''
 print("Datos Tabla Adidas:")
 imprimir("Adidas")
 print(" ")
@@ -405,3 +416,4 @@ Precio_Medio()
 print(" ")
 print("Ganancias esperadas por tabla:")
 Ganancias_Esperadas()
+'''

@@ -170,8 +170,14 @@ class Imagen:
             self.Label.place(x = 10, y = 10 )
             self.Entrada = Entry(self.ventana)
             self.Entrada.place(x = 30, y = 10)
-            self.BotonImagen = Button(self.ventana, text = "Insertar imagen", command=lambda: seleccionar_y_guardar(self.MarcaV.get(),self.Entrada.get()))
+            self.BotonImagen = Button(self.ventana, text = "Insertar imagen", command=lambda: seleccionar_y_guardar(self.Marca.get(),self.Entrada.get()))
             self.BotonImagen.place(x = 10 ,y = 40)
+            self.botonRegresar = Button(self.ventana, text = "Regresar", command = lambda: iniciar_principal(self.ventana))
+            self.botonRegresar.place(x = 120, y = 40)
+
+def iniciar_principal(self):
+    self.destroy()
+    Principal()
 
 class Principal:
      def __init__(self):
@@ -235,30 +241,47 @@ def Ventana_consulta():
     canvas.bind_all("<Button-4>", lambda e: hacer_scroll_con_rueda(canvas, e))
     canvas.bind_all("<Button-5>", lambda e: hacer_scroll_con_rueda(canvas, e))
 
+
+
+    ListaMarca = ["Nike", "Adidas", "Converse", "Puma", "Skechers","VANS"]
+    Marca = StringVar()
+    Label_Marca = Label( text = "Marca: ")
+    Entrada_Marca = OptionMenu(contenedor,Marca, *ListaMarca)
+    Entrada_Marca.place(x = 380, y = 50)
+    boton_consulta = Button(contenedor, text = "Consultar", command = lambda: imprimir(obtener_productos(Marca.get())))
+    boton_consulta.place(x = 380, y = 100)
+    boton_consulta_todos = Button(contenedor, text = "Consultar todos", command = lambda: imprimir(obtener_todo()))
+    boton_consulta_todos.place(x = 380, y = 150)
+    botonRegresar = Button(root, text = "Regresar", command = lambda: iniciar_principal(root))
+    botonRegresar.place(x = 380, y = 200)
+
     # -------------------------------------
     # Mostrar productos desde la base de datos
     # -------------------------------------
-    productos = obtener_productos()
-    imagenes_cache = []  # Previene GC
+    imagenes_cache = [] 
+    def imprimir(productos):
+        for widget in marco.winfo_children():
+            widget.destroy()
 
-    for id, sexo, talla, material, precio, stock, imagen in productos:
-        frame_producto = tk.Frame(marco, pady=10, padx=10, borderwidth=2, relief="ridge")
-        frame_producto.pack(fill="x", padx=5, pady=5)
+
+        for  marca, id, sexo, talla, material, precio, stock, imagen in productos:
+            frame_producto = tk.Frame(marco, pady=10, padx=10, borderwidth=2, relief="ridge")
+            frame_producto.pack(fill="x", padx=5, pady=5)
 
         # Imagen
-        if imagen:
-            img = Image.open(io.BytesIO(imagen))
-            img = img.resize((120, 120))
-            img_tk = ImageTk.PhotoImage(img)
-            imagenes_cache.append(img_tk)
+            if imagen:
+                img = Image.open(io.BytesIO(imagen))
+                img = img.resize((120, 120))
+                img_tk = ImageTk.PhotoImage(img)
+                imagenes_cache.append(img_tk)
 
-            tk.Label(frame_producto, image=img_tk).pack(side="left", padx=10)
-        else:
-            tk.Label(frame_producto, text="(Sin imagen)").pack(side="left", padx=10)
+                tk.Label(frame_producto, image=img_tk).pack(side="left", padx=10)
+            else:
+                tk.Label(frame_producto, text="(Sin imagen)").pack(side="left", padx=10)
 
         # Texto
-        info = f"Id_Producto: {id}\n Sexo: {sexo}\nTalla: {talla}\n Material:{material}\n Precio: {precio}\n Stock: {stock}"
-        tk.Label(frame_producto, text=info, justify="left").pack(side="left")
+            info = f"Marca: {marca} \nId_Producto: {id}\n Sexo: {sexo}\nTalla: {talla}\n Material:{material}\n Precio: {precio}\n Stock: {stock}"
+            tk.Label(frame_producto, text=info, justify="left").pack(side="left")
 
 
 Principal()

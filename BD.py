@@ -356,12 +356,49 @@ def guardar_imagen_blob(tabla, id_producto, ruta_imagen):
     finally:
         conexion.close()
 
-def obtener_productos():
+def obtener_productos(tabla):
     conn,cursor = Conex()
-    cursor.execute("SELECT Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen FROM Adidas")
+    cursor.execute(f"SELECT '{tabla}' AS MARCA, Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen FROM {tabla}")
     datos = cursor.fetchall()
     conn.close()
     return datos
+
+def obtener_todo():
+    conexion, cursor = Conex()
+    cursor.execute("""
+        SELECT 'Adidas' AS Marca, Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen
+        FROM Adidas
+
+        UNION ALL
+
+        SELECT 'Converse', Id_Producto,  Sexo, Talla, Material, Precio, Stock, Imagen
+        FROM Converse
+
+        UNION ALL
+
+        SELECT 'Nike', Id_Producto,  Sexo, Talla, Material, Precio, Stock, Imagen
+        FROM Nike
+
+
+        UNION ALL
+
+        SELECT 'Puma', Id_Producto,  Sexo, Talla, Material, Precio, Stock, Imagen
+        FROM Puma
+
+        UNION ALL
+
+        SELECT 'Skechers', Id_Producto,  Sexo, Talla, Material, Precio, Stock, Imagen
+        FROM Skechers
+
+        UNION ALL
+
+        SELECT 'VANS', Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen
+        FROM VANS
+    """)
+    datos = cursor.fetchall()
+    conexion.close()
+    return datos
+
 
 
 def hacer_scroll_con_rueda(canvas, evento):

@@ -11,7 +11,8 @@ def ruta_recurso(relative_path):
     """Devuelve la ruta correcta para archivos dentro o fuera del exe."""
     base_path = getattr(sys, "_MEIPASS", os.path.abspath("."))
     return os.path.join(base_path, relative_path)
-Imagenes_cache = []
+
+
 color = "#EB6C10"
 fondo = "#292929"
 
@@ -159,9 +160,9 @@ class Imagen:
             self.ventana = Tk()
             self.ventana.geometry("400x200")
             self.ListaMarca = ["Nike", "Adidas", "Converse", "Puma", "Skechers","VANS"]
-            self.MarcaV = StringVar()
+            self.Marca = StringVar()
             self.Label_Marca = Label( text = "Marca: ")
-            self.Entrada_Marca = OptionMenu(self.ventana, self.MarcaV, *self.ListaMarca)
+            self.Entrada_Marca = OptionMenu(self.ventana, self.Marca, *self.ListaMarca)
             self.Label_Marca.place(x = 200, y = 10)
             self.Entrada_Marca.place(x = 250, y = 10)
             self.ventana.title("Guardar Imagen") 
@@ -176,16 +177,30 @@ class Principal:
      def __init__(self):
       self.ventana = Tk()
       self.ventana.geometry("400x200")
-      self.botonRegistro = Button(text = "Ventana Registro", command = lambda: Registro())
-      self.botonConsulta = Button(text = "Ventana Consulta", command = lambda: Ventana_consulta())
-      self.botonImagen = Button(text = "Agregar imagen", command = lambda: Imagen())
+      self.botonRegistro = Button(text = "Ventana Registro", command = lambda: Iniciar_Registro())
+      self.botonConsulta = Button(text = "Ventana Consulta", command = lambda: Iniciar_Consulta())
+      self.botonImagen = Button(text = "Agregar imagen", command = lambda: Iniciar_Imagen())
 
       self.botonConsulta.place(x = 10, y = 30)
       self.botonImagen.place(x = 150, y = 30)
       self.botonRegistro.place(x = 300, y = 30)
 
+      def Iniciar_Registro():
+          self.ventana.destroy()
+          Registro()
+
+      def Iniciar_Consulta():
+          self.ventana.destroy()
+          Ventana_consulta()
+
+      def Iniciar_Imagen():
+          self.ventana.destroy()
+          Imagen()
+
+
+
 def Ventana_consulta():
-    root = tk.Toplevel()  # ← IMPORTANTE: antes era Tk()
+    root = tk.Tk()
     root.title("Lista de Productos")
     root.geometry("600x500")
 

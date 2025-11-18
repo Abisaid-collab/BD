@@ -204,7 +204,7 @@ def comparar_Admin(usuario,contra):
         if fila is None:
                 return False
         return contra == fila[0]
-
+'''
 def imprimir(tabla):
         conexion,cursor = Conex()
         cursor.execute(f"SELECT * FROM {tabla}")
@@ -215,7 +215,7 @@ def imprimir(tabla):
         for fila in filas:
                  print(" | ".join(str(campo) for campo in fila))
         conexion.close()
-
+'''
 def Stock_Total(tabla):
         conexion,cursor = Conex()
         cursor.execute(f"SELECT SUM(Stock) FROM  {tabla} AS Stock_Total")
@@ -227,51 +227,50 @@ def Stock_Total(tabla):
 def Sin_Stock():
     conexion, cursor = Conex()
     cursor.execute("""
-        SELECT 'Adidas' AS Marca, Id_Producto, Precio, Stock
+        SELECT 'Adidas' AS Marca, Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen
         FROM Adidas
         WHERE Stock = 0 OR Stock IS NULL
 
         UNION ALL
 
-        SELECT 'Converse', Id_Producto, Precio, Stock
+        SELECT 'Converse', Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen
         FROM Converse
         WHERE Stock = 0 OR Stock IS NULL
 
         UNION ALL
 
-        SELECT 'Nike', Id_Producto, Precio, Stock
+        SELECT 'Nike', Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen
         FROM Nike
         WHERE Stock = 0 OR Stock IS NULL
 
         UNION ALL
 
-        SELECT 'Puma', Id_Producto, Precio, Stock
+        SELECT 'Puma', Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen
         FROM Puma
         WHERE Stock = 0 OR Stock IS NULL
 
         UNION ALL
 
-        SELECT 'Skechers', Id_Producto, Precio, Stock
+        SELECT 'Skechers', Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen
         FROM Skechers
         WHERE Stock = 0 OR Stock IS NULL
 
         UNION ALL
 
-        SELECT 'VANS', Id_Producto, Precio, Stock
+        SELECT 'VANS', Id_Producto, Sexo, Talla, Material, Precio, Stock, Imagen
         FROM VANS
         WHERE Stock = 0 OR Stock IS NULL
     """)
     datos = cursor.fetchall()
-    if not datos:
-        print("No hay productos sin stock.")
-        return
-
     conexion.close()
+    return datos
 
+'''
     print("Marca | ID | Precio | Stock")
     print("---------------------------------")
     for fila in datos:
         print(f"{fila[0]} | {fila[1]} | {fila[2]} | {fila[3]}")
+'''
 
 def Precio_Medio():
         conexion,cursor = Conex()
@@ -301,7 +300,7 @@ def Precio_Medio():
         for fila in filas:
                  print(" | ".join(str(campo) for campo in fila))
         conexion.close()
-
+'''
 def Ganancias_Esperadas():
         conexion,cursor = Conex()
         cursor.execute("""
@@ -330,6 +329,7 @@ def Ganancias_Esperadas():
         for fila in filas:
                  print(" | ".join(str(campo) for campo in fila))
         conexion.close()
+'''
 
 
 def guardar_imagen_blob(tabla, id_producto, ruta_imagen):

@@ -245,7 +245,7 @@ def Ventana_consulta():
 
     ListaMarca = ["Nike", "Adidas", "Converse", "Puma", "Skechers","VANS"]
     Marca = StringVar()
-    Label_Marca = Label( text = "Marca: ")
+    Marca.set("Seleccione la marca:")
     Entrada_Marca = OptionMenu(contenedor,Marca, *ListaMarca)
     Entrada_Marca.place(x = 380, y = 50)
     boton_consulta = Button(contenedor, text = "Consultar", command = lambda: imprimir(obtener_productos(Marca.get())))
@@ -254,6 +254,8 @@ def Ventana_consulta():
     boton_consulta_todos.place(x = 380, y = 150)
     botonRegresar = Button(root, text = "Regresar", command = lambda: iniciar_principal(root))
     botonRegresar.place(x = 380, y = 200)
+    botonSinstock = Button(contenedor, text = "Sin Stock", command = lambda: imprimir(Sin_Stock()))
+    botonSinstock.place(x = 380, y = 250 )
 
     # -------------------------------------
     # Mostrar productos desde la base de datos
@@ -285,5 +287,4 @@ def Ventana_consulta():
 
 
 Principal()
-
 mainloop()

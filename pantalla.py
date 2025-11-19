@@ -211,11 +211,9 @@ def Ventana_consulta():
     root.geometry("600x500")
 
 
-    # ----- Contenedor principal -----
     contenedor = tk.Frame(root)
     contenedor.pack(fill="both", expand=True)
 
-    # Canvas donde va el contenido scrolleable
     canvas = tk.Canvas(contenedor)
     canvas.pack(side="left", fill="both", expand=True)
 
@@ -228,16 +226,11 @@ def Ventana_consulta():
     # Ajustar la región scrolleable cuando cambie el tamaño
     canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
-    # ----- Frame interno -----
     marco = tk.Frame(canvas)
     canvas.create_window((0, 0), window=marco, anchor="nw")
 
-    # --------------------------
     # Conectar scroll del mouse
-    # --------------------------
-    # Windows y Linux
     canvas.bind_all("<MouseWheel>", lambda e: hacer_scroll_con_rueda(canvas, e))
-    # Linux (algunas distros)
     canvas.bind_all("<Button-4>", lambda e: hacer_scroll_con_rueda(canvas, e))
     canvas.bind_all("<Button-5>", lambda e: hacer_scroll_con_rueda(canvas, e))
 
@@ -257,9 +250,6 @@ def Ventana_consulta():
     botonSinstock = Button(contenedor, text = "Sin Stock", command = lambda: imprimir(Sin_Stock()))
     botonSinstock.place(x = 380, y = 250 )
 
-    # -------------------------------------
-    # Mostrar productos desde la base de datos
-    # -------------------------------------
     imagenes_cache = [] 
     def imprimir(productos):
         for widget in marco.winfo_children():
@@ -270,7 +260,6 @@ def Ventana_consulta():
             frame_producto = tk.Frame(marco, pady=10, padx=10, borderwidth=2, relief="ridge")
             frame_producto.pack(fill="x", padx=5, pady=5)
 
-        # Imagen
             if imagen:
                 img = Image.open(io.BytesIO(imagen))
                 img = img.resize((120, 120))
@@ -281,7 +270,6 @@ def Ventana_consulta():
             else:
                 tk.Label(frame_producto, text="(Sin imagen)").pack(side="left", padx=10)
 
-        # Texto
             info = f"Marca: {marca} \nId_Producto: {id}\n Sexo: {sexo}\nTalla: {talla}\n Material:{material}\n Precio: {precio}\n Stock: {stock}"
             tk.Label(frame_producto, text=info, justify="left").pack(side="left")
 

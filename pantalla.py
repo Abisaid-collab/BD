@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk
-from BD import *
+from BD.BD import *
 import os
 import sys
 import io
@@ -170,7 +170,7 @@ class Imagen:
             self.Label.place(x = 10, y = 10 )
             self.Entrada = Entry(self.ventana)
             self.Entrada.place(x = 30, y = 10)
-            self.BotonImagen = Button(self.ventana, text = "Insertar imagen", command=lambda: seleccionar_y_guardar(self.Marca.get(),self.Entrada.get()))
+            self.BotonImagen = Button(self.ventana, text = "Insertar imagen", command = lambda: seleccionar_y_guardar(self.Marca.get(),self.Entrada.get()))
             self.BotonImagen.place(x = 10 ,y = 40)
             self.botonRegresar = Button(self.ventana, text = "Regresar", command = lambda: iniciar_principal(self.ventana))
             self.botonRegresar.place(x = 120, y = 40)

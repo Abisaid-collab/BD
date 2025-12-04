@@ -348,6 +348,7 @@ def guardar_imagen_blob(tabla, id_producto, ruta_imagen):
 
         if cursor.rowcount == 0:
             return "No se encontró el producto para asignar imagen."
+        
         return "Imagen guardada correctamente."
 
     except Exception as e:

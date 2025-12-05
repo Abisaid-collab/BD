@@ -420,7 +420,7 @@ class ConsultaWindow(tk.Toplevel):
         # Crear cards
         for idx, fila in enumerate(self.productos_actuales):
             marca, idp, sexo, talla, material, precio, stock, imagen = fila
-            card = ttk.Frame(self.inner_frame, style="Card.TFrame", width=CARD_WIDTH, height=CARD_HEIGHT)
+            card = ttk.Frame(self.inner_frame, style="Card.TFrame", width=300, height=CARD_HEIGHT)
             card.grid_propagate(False)  # forzar tamaño
             # Estilo visual del card: padding y borde sutil
             card.grid(row=0, column=idx, padx=10, pady=10)  # temporal; serán reorganizados por _recalcular_grid

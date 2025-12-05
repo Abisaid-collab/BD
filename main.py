@@ -86,8 +86,23 @@ class App:
         ttk.Button(btn_frame, text="Consulta", style="Sec.TButton", command=self.open_consulta).pack(side="left", padx=6)
         ttk.Button(btn_frame, text="Agregar Imagen", style="Sec.TButton", command=self.open_imagen).pack(side="left", padx=6)
 
+        # ---------------------------
+        #   AGREGAR IMAGEN AQUÍ
+        # ---------------------------
+        try:
+            self.bg_img_raw = Image.open("Logo.jpg")
+            self.bg_img_raw = self.bg_img_raw.resize((650, 350))
+            self.bg_img = ImageTk.PhotoImage(self.bg_img_raw)
+
+            # CAMBIO: usa tk.Label en lugar de ttk.Label
+            img_label = tk.Label(container, image=self.bg_img, bg=PALETA["fondo"], relief="flat", bd=0)
+            img_label.pack(fill="both", expand=True, pady=(0, 12))
+        except FileNotFoundError:
+            ttk.Label(container, text="Logo.jpg no encontrado", foreground=PALETA["subtexto"]).pack(pady=20)
+
         # Pie / info
-        footer = ttk.Label(container, text="Diseño: estilo Spotify · Oscuro y elegante", foreground=PALETA["subtexto"])
+        footer = ttk.Label(container, text="Propiedad intelectual de CalzaIsoft 2025",
+                foreground=PALETA["subtexto"])
         footer.pack(side="bottom", pady=(12,0))
 
     def open_registro(self):

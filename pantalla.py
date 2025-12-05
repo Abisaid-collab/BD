@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk
-from BD.BD import *
+from BD import *
 import os
 import sys
 import io

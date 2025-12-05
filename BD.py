@@ -40,23 +40,40 @@ def Eliminar_tabla(Tabla):
         conexion.commit()
         conexion.close()
 
-def agregar_nuevo_zapato(tabla,id,sexo,talla,color,material,tipo,precio,stock):
-        conexion,cursor = Conex()
-        try:
-                cursor.execute(f"INSERT INTO {tabla} VALUES ('{id}','{sexo}',{talla},'{color}','{material}','{tipo}',{precio},{stock})")
-                mensaje = ("Producto Agregado correctamente")
-                conexion.commit()
-        except sql.IntegrityError:
-                mensaje = ("Error: el ID del producto ya existe o hay conflicto de integridad.")
-        except sql.OperationalError as e:
-                mensaje = (f"Error de operacion {e}")
-        except Exception as e:
-                mensaje = (f"Ocurrio un error inesperado {e}")
-        finally:
-                conexion.close()
+def agregar_nuevo_zapato(tabla, id, sexo, talla, color, material, tipo, precio, stock, datos):
+    conexion, cursor = Conex()
+    try:
+        query = f"""
+            INSERT INTO {tabla}
+            (id_producto, sexo, talla, color, material, tipo, precio, stock, imagen)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """
 
-        return mensaje
+        cursor.execute(query, (
+            id,
+            sexo,
+            talla,
+            color,
+            material,
+            tipo,
+            precio,
+            stock,
+            datos   # bytes de la imagen
+        ))
 
+        mensaje = "Producto agregado correctamente"
+        conexion.commit()
+
+    except sql.IntegrityError:
+        mensaje = "Error: el ID del producto ya existe o hay conflicto de integridad."
+    except sql.OperationalError as e:
+        mensaje = f"Error de operación {e}"
+    except Exception as e:
+        mensaje = f"Ocurrió un error inesperado: {e}"
+    finally:
+        conexion.close()
+
+    return mensaje
 def mostrar_datos(Tabla):
         conexion,cursor = Conex()
         cursor.execute(f"Select * from {Tabla}")
@@ -356,6 +373,15 @@ def guardar_imagen_blob(tabla, id_producto, ruta_imagen):
 
     finally:
         conexion.close()
+
+def Imagen(ruta):
+       try:
+              with open(ruta, "rb") as f:
+                     datos = f.read()
+                     return datos
+       except:
+              print("Ocurrio un error")
+
 
 def obtener_productos(tabla):
     conn,cursor = Conex()

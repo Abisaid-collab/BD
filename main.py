@@ -17,6 +17,7 @@ from BD import (
     obtener_productos,
     obtener_todo,
     Sin_Stock,
+    Imagen
 )
 
 # -------------------------
@@ -180,6 +181,9 @@ class RegistroWindow(tk.Toplevel):
         self.e_stock = ttk.Entry(right, width=24)
         self.e_stock.grid(row=3, column=1, pady=6)
 
+        ttk.Label(right, text = "Insertar Imagen:", foreground = PALETA["subtexto"]).grid(row = 4, column = 0, sticky = "w", pady = 6)
+        self.btn_imagen = ttk.Button(right, text="Insertar imagen", style="Sec.TButton", command= self._seleccionar).grid(row=4, column=1, pady=8)
+
         # Botones
         botones = ttk.Frame(main, style="TFrame")
         botones.pack(fill="x", pady=(12,0))
@@ -190,6 +194,14 @@ class RegistroWindow(tk.Toplevel):
                    command=self._abrir_modificar).pack(side="left", padx=6)
         ttk.Button(botones, text="Eliminar", style="Sec.TButton",
                    command=self._eliminar).pack(side="left", padx=6)
+        
+    def _seleccionar(self):
+        ruta = filedialog.askopenfilename(
+        title="Seleccionar imagen",
+        filetypes=[("Imágenes", "*.jpg *.png *.jpeg *.gif *.bmp")]
+        )
+        self.datos = Imagen(ruta)
+
 
     def _agregar(self):
         msg = agregar_nuevo_zapato(
@@ -202,6 +214,7 @@ class RegistroWindow(tk.Toplevel):
             self.tipo_v.get(),
             self.e_precio.get(),
             self.e_stock.get(),
+            self.datos
         )
         messagebox.showinfo("Información", msg)
 
